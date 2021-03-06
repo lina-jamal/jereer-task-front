@@ -1,14 +1,12 @@
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, createContext } from "react";
 import Axios from "axios";
 
-const AuthContext = React.createContext();
+export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const isAuthenticated = useState(null);
   const [userInfo, setUserInfo] = useState({});
 
   useEffect(() => {
@@ -29,7 +27,7 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
     } catch (error) {
       setIsAuth(false);
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -38,7 +36,7 @@ const AuthProvider = ({ children }) => {
       {loading ? (
         <p>Loading ..!</p>
       ) : (
-        <AuthContext.Provider value={{ isAuthenticated, userInfo }}>
+        <AuthContext.Provider value={{ isAuth, setIsAuth, userInfo, loading }}>
           {children}
         </AuthContext.Provider>
       )}
@@ -47,7 +45,5 @@ const AuthProvider = ({ children }) => {
 };
 
 AuthProvider.propTypes = { children: PropTypes.node.isRequired };
-
-// const AuthConsumer = AuthContext.Consumer
 
 export default AuthProvider;
