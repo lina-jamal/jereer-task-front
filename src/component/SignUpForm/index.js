@@ -28,16 +28,13 @@ export default function SignUp() {
       alert("confirmed password doesn't match password pleaze try again");
     } else {
       try {
-        const { data } = await Axios.post(
-          "https://jereer-back.herokuapp.com/api/v1/signup",
-          {
-            name,
-            phone,
-            confirmPassword,
-            email,
-            password,
-          }
-        );
+        await Axios.post("https://jereer-back.herokuapp.com/api/v1/signup", {
+          name,
+          phone,
+          confirmPassword,
+          email,
+          password,
+        });
         setEmail("");
         setName("");
         setPassword("");
