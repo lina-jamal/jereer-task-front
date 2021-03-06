@@ -21,10 +21,14 @@ export default function LoginForm() {
       alert("error , you have empty value");
     } else {
       try {
-        await Axios.post("http://localhost:5000/api/v1/login", {
-          email,
-          password,
-        });
+        const data = await Axios.post(
+          "https://jereer-back.herokuapp.com/api/v1/login",
+          {
+            email,
+            password,
+          }
+        );
+        console.log(data);
         setEmail("");
         setPassword("");
         setIsAuth(true);
