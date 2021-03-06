@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
 import Axios from "axios";
-
+import { AuthContext } from "../AuthContex";
 import Input from "../common/Input";
 import Button from "../common/Button";
-// import "./style.css";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setIsAuth, isAuth } = useContext(AuthContext);
+  console.log(isAuth);
 
   const [errorMessage, setErrorMessage] = useState("");
+  const history = useHistory();
 
   const handelSubmit = async (e) => {
     e.preventDefault();
@@ -18,12 +21,14 @@ export default function LoginForm() {
       alert("error , you have empty value");
     } else {
       try {
-        await Axios.post("https://jereer-back.herokuapp.com/api/v1/login", {
+        await Axios.post("http://localhost:5000/api/v1/login", {
           email,
           password,
         });
         setEmail("");
         setPassword("");
+        setIsAuth(true);
+        history.push("/hello");
       } catch (err) {
         setErrorMessage(err);
       }

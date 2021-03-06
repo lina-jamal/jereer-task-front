@@ -7,6 +7,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import AuthProvider from "../component/AuthContex";
 
 import "./App.css";
+const hello = () => {
+  return <h1>Hello</h1>;
+};
 
 function App() {
   return (
@@ -19,7 +22,7 @@ function App() {
             <Route exact path="/" component={Landing}></Route>
             <Route exact path="/Login" component={Login} />
             <Route exact path="/signUp" component={SignUp} />
-            <ProtectedRoute component={Landing} />
+            <ProtectedRoute path="/hello" component={hello} />
 
             <Route>
               <h1>page not found</h1>
