@@ -6,7 +6,7 @@ export default function Header() {
     <header>
       <nav>
         <Link to="/">home</Link>
-        <Link to="/register">register</Link>
+        <Link to="/signUp">signUp</Link>
         <Link to="/login">login</Link>
       </nav>
     </header>

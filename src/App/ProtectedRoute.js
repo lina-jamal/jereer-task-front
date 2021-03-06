@@ -3,11 +3,9 @@ import { Redirect, Route } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { AuthContext } from "../component/AuthContex";
-console.log(AuthContext);
 
 function ProtectedRoute({ children, exact, path, component }) {
   const { isAuth, loading } = useContext(AuthContext);
-  console.log(isAuth, loading, 9);
 
   if (isAuth && !loading) {
     return (
