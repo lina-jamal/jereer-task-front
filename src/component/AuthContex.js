@@ -1,46 +1,41 @@
 import PropTypes from "prop-types";
 import React, { useEffect, useState, createContext } from "react";
 import Axios from "axios";
-
+import { useHistory } from "react-router-dom";
+import firebase from "../firebase/config";
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
+  const history = useHistory();
+
   const [isAuth, setIsAuth] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [userInfo, setUserInfo] = useState({});
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { CancelToken } = Axios;
-    const source = CancelToken.source();
-
+    const getAuth = async () => {
+      try {
+        const { user } = await firebase
+          .auth()
+          .signInWithCustomToken(localStorage.getItem("userToken"));
+        const tokonId = await user.getIdToken();
+        await Axios.post(`https://jereer-back.herokuapp.com/api/v1/auth`, {
+          tokonId,
+        });
+        setIsAuth(true);
+        setLoading(false);
+      } catch (error) {
+        // history.push("/login");
+        setIsAuth(false);
+        setLoading(false);
+      }
+    };
     getAuth();
-    return () => source.cancel("Operation canceled by the user.");
   }, []);
 
-  const getAuth = async () => {
-    try {
-      const { data } = await Axios.get(
-        `https://jereer-back.herokuapp.com/api/v1/auth`
-      );
-      setUserInfo({ data });
-      setIsAuth(true);
-      setLoading(false);
-    } catch (error) {
-      setIsAuth(false);
-      setLoading(false);
-    }
-  };
-
   return (
-    <>
-      {loading ? (
-        <p>Loading ..!</p>
-      ) : (
-        <AuthContext.Provider value={{ isAuth, setIsAuth, userInfo, loading }}>
-          {children}
-        </AuthContext.Provider>
-      )}
-    </>
+    <AuthContext.Provider value={{ isAuth, setIsAuth, loading }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

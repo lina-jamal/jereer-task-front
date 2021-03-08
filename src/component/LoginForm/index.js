@@ -21,14 +21,14 @@ export default function LoginForm() {
       alert("error , you have empty value");
     } else {
       try {
-        const data = await Axios.post(
-          "https://jereer-back.herokuapp.com/api/v1/login",
-          {
-            email,
-            password,
-          }
-        );
-        console.log(data);
+        const {
+          data: { userToken },
+        } = await Axios.post("https://jereer-back.herokuapp.com/api/v1/login", {
+          email,
+          password,
+        });
+        // console.log(userToken);
+        localStorage.setItem("userToken", userToken);
         setEmail("");
         setPassword("");
         setIsAuth(true);
